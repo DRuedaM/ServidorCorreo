@@ -21,6 +21,7 @@ public class Servidor
 				ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
 				Thread nuevoHilo = new ClientHandler(socket, oos, ois);
 				nuevoHilo.start();
+				System.out.println("Nuevo cliente creado!!");
 			}
 		} 
 		catch (Exception e)

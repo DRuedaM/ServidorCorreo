@@ -6,5 +6,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="E:/Estudios/Grado Superior/2ºCurso/DI/ServidorCorreo/lib/lib/javax.activation-1.1.0.v201105071233.jar"/>
+	<classpathentry kind="lib" path="E:/Estudios/Grado Superior/2ºCurso/DI/ServidorCorreo/lib/lib/javax.ejb.jar"/>
+	<classpathentry kind="lib" path="E:/Estudios/Grado Superior/2ºCurso/DI/ServidorCorreo/lib/lib/javax.faces-api-2.0.jar"/>
+	<classpathentry kind="lib" path="E:/Estudios/Grado Superior/2ºCurso/DI/ServidorCorreo/lib/lib/javax-inject.jar"/>
+	<classpathentry kind="lib" path="E:/Estudios/Grado Superior/2ºCurso/DI/ServidorCorreo/lib/lib/mail.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
