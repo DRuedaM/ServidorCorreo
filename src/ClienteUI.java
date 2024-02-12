@@ -6,10 +6,15 @@ import javax.swing.JTextArea;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.InetAddress;
+import java.net.Socket;
 import java.awt.event.ActionEvent;
 
 public class ClienteUI {
@@ -37,7 +42,8 @@ public class ClienteUI {
 	/**
 	 * Create the application.
 	 */
-	public ClienteUI() {
+	public ClienteUI() 
+	{
 		initialize();
 	}
 
@@ -71,7 +77,28 @@ public class ClienteUI {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				
+				try
+				{
+					InetAddress host = InetAddress.getLocalHost();
+					Socket socket = null;
+					ObjectOutputStream oos = null;
+					ObjectInputStream ois = null;
+					
+					socket = new Socket(host.getHostName(), 2600);
+					oos = new ObjectOutputStream(socket.getOutputStream());
+					System.out.println("Sending request to Socket Server");
+					String envio = emailToText.getText() + "," + asuntoText.getText() + "," + contenidoText.getText();
+					oos.writeObject(envio);
+					ois = new ObjectInputStream(socket.getInputStream());
+					Object message = ois.readObject();
+					JOptionPane.showMessageDialog(btnNewButton, message);
+					ois.close();
+					oos.close();
+				} 
+				catch (Exception e1)
+				{
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnNewButton.setBackground(new Color(187, 210, 232));

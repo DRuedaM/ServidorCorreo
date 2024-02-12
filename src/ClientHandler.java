@@ -3,6 +3,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Properties;
 
+import javax.imageio.spi.ImageOutputStreamSpi;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
@@ -40,8 +41,6 @@ public class ClientHandler extends Thread
 	@Override
 	public void run() 
 	{
-		while(true)
-		{
 			try 
 			{
 				String message = (String) ois.readObject();
@@ -49,12 +48,12 @@ public class ClientHandler extends Thread
 				String[] envio = message.split(",");
 				createEmail(envio);
 				sendEmail();
+				oos.writeObject("El correo ha sido enviado correctamente");
 			} 
 			catch (Exception e) 
 			{
 				e.printStackTrace();
 			}
-		}
 	}
 	
 	private void createEmail(String[] datos)
