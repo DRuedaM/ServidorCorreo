@@ -84,7 +84,7 @@ public class ClientHandler extends Thread
 				}
 				listacorreos = InternetAddress.parse(palabraStrings);
 				mCorreo.addRecipients(Message.RecipientType.TO, listacorreos);
-			}
+			}else {mCorreo.setRecipient(Message.RecipientType.TO, new InternetAddress(datos[0]));}
 			mCorreo.setSubject(subject);
 			mCorreo.setText(content, "ISO-8859-1", "html");
 		} 
