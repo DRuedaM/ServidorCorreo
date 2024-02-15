@@ -4,6 +4,8 @@ import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
 import javax.swing.JButton;
+import javax.swing.JDialog;
+
 import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -79,21 +81,31 @@ public class ClienteUI {
 			{
 				try
 				{
-					InetAddress host = InetAddress.getLocalHost();
-					Socket socket = null;
-					ObjectOutputStream oos = null;
-					ObjectInputStream ois = null;
+					String envio;
 					
-					socket = new Socket(host.getHostName(), 2600);
-					oos = new ObjectOutputStream(socket.getOutputStream());
-					System.out.println("Sending request to Socket Server");
-					String envio = emailToText.getText() + "," + asuntoText.getText() + "," + contenidoText.getText();
-					oos.writeObject(envio);
-					ois = new ObjectInputStream(socket.getInputStream());
-					Object message = ois.readObject();
-					JOptionPane.showMessageDialog(btnNewButton, message);
-					ois.close();
-					oos.close();
+					if(emailToText.getText().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$"))
+					{
+						InetAddress host = InetAddress.getLocalHost();
+						Socket socket = null;
+						ObjectOutputStream oos = null;
+						ObjectInputStream ois = null;
+						
+						socket = new Socket(host.getHostName(), 2600);
+						oos = new ObjectOutputStream(socket.getOutputStream());
+						System.out.println("Sending request to Socket Server");
+						
+						envio = emailToText.getText() + "," + asuntoText.getText() + "," + contenidoText.getText();
+						oos.writeObject(envio);
+						ois = new ObjectInputStream(socket.getInputStream());
+						Object message = ois.readObject();
+						JOptionPane.showMessageDialog(btnNewButton, message);
+						
+						ois.close();
+						oos.close();
+					}
+					else {JOptionPane.showMessageDialog(btnNewButton, "Introduzca un correro electronico valido");}
+					
+					
 				} 
 				catch (Exception e1)
 				{
