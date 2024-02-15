@@ -3,7 +3,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Properties;
 
-import javax.imageio.spi.ImageOutputStreamSpi;
+import javax.mail.Address;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.NoSuchProviderException;
@@ -41,27 +41,26 @@ public class ClientHandler extends Thread
 	@Override
 	public void run() 
 	{
-			try 
-			{
-				String message = (String) ois.readObject();
-				System.out.println("Mensaje recibido: " + message);
-				String[] envio = message.split(",");
-				createEmail(envio);
-				sendEmail();
-				oos.writeObject("El correo ha sido enviado correctamente");
-			} 
-			catch (Exception e) 
-			{
-				e.printStackTrace();
-			}
+		try 
+		{
+			String message = (String) ois.readObject();
+			System.out.println("Mensaje recibido: " + message);
+			String[] envio = message.split(",");
+			createEmail(envio);
+			sendEmail();
+			oos.writeObject("El correo ha sido enviado correctamente");
+		} 
+		catch (Exception e) 
+		{
+			e.printStackTrace();
+		}
 	}
 	
 	private void createEmail(String[] datos)
 	{
-		emailTo = datos[0];
-		subject = datos[1];
-		content = datos[2];
-		
+		subject = datos[datos.length - 2];
+		content = datos[datos.length - 1];
+	
 		mProperties.put("mail.smtp.host", "smtp.gmail.com");
 		mProperties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
 		mProperties.setProperty("mail.smtp.starttls.enable", "true");
@@ -75,7 +74,17 @@ public class ClientHandler extends Thread
 		try 
 		{
 			mCorreo.setFrom(new InternetAddress(emailFrom));
-			mCorreo.setRecipient(Message.RecipientType.TO, new InternetAddress(emailTo));
+			if(datos.length > 3) 
+			{
+				Address[] listacorreos = null;
+				String palabraStrings = "";
+				for(int i = 0; i < datos.length - 2 ;i++)
+				{
+					palabraStrings += datos[i] + ",";
+				}
+				listacorreos = InternetAddress.parse(palabraStrings);
+				mCorreo.addRecipients(Message.RecipientType.TO, listacorreos);
+			}
 			mCorreo.setSubject(subject);
 			mCorreo.setText(content, "ISO-8859-1", "html");
 		} 
